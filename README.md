@@ -4,7 +4,7 @@
    For new entries, add `versions/.../gradle.properties` with the same keys as other versions.
 2. Change `mod.group`, `mod.id` and `mod.name` properties in `gradle.properties`.
 3. Rename `com.example` package in `src/main/java`.
-4. Rename `src/main/resources/template.mixins.json` to use your mod's id.
+4. Rename `src/main/resources/solarpanels.mixins.json` to use your mod's id.
 5. Review the `LICENSE` file. 
    See the [license decision diagram](https://docs.codeberg.org/getting-started/licensing/#license-decision-diagram) for common options.
 6. Review `src/main/resources/fabric.mod.json` to have up-to-date properties.

@@ -1,3 +1,5 @@
+versions/*/src/main/generated/
+
 # gradle
 
 .gradle/

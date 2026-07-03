@@ -19,6 +19,11 @@ val requiredJava: JavaVersion = when {
 val compatibleVersions: List<String> = sc.properties.rawOrNull("mod", "mc_releases")
     ?.asList().orEmpty().map { it.toString() }
 
+
+fabricApi.configureDataGeneration {
+    client = true
+}
+
 repositories {
     /**
      * Restricts dependency search of the given [groups] to the [maven URL][url],
@@ -33,27 +38,26 @@ repositories {
 }
 
 dependencies {
-    /**
-     * Fetches only the required Fabric API modules to not waste time downloading all of them for each version.
-     * @see <a href="https://github.com/FabricMC/fabric">List of Fabric API modules</a>
-     */
-    fun fapi(vararg modules: String) {
-        for (it in modules) modImplementation(fabricApi.module(it, sc.properties["deps.fabric_api"]))
-    }
-
     minecraft("com.mojang:minecraft:${sc.current.version}")
     // Applies Mojang Mappings on obfuscated versions
     loomx.applyMojangMappings()
 
     // Use `mod{dependency type}` even on 26.1+ - loom-back-compat converts them
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-    fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0", "fabric-registry-sync-v0")
+
+    val fabricVersion = sc.properties["deps.fabric_api"] as String
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
+
+    val energyVersion = sc.properties["deps.energy"] as String
+    val teamRebornEnergy = "teamreborn:energy:$energyVersion"
+    modApi(teamRebornEnergy)
+    include(teamRebornEnergy)
 }
 
 loom {
     fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json") // Useful for interface injection
     accessWidenerPath = sc.process(
-        rootProject.file("src/main/resources/template.ct"),
+        rootProject.file("src/main/resources/solarpanels.ct"),
         "build/processed.ct"
     )
 
@@ -66,6 +70,15 @@ loom {
         generateRunConfig = true
         runDirectory = rootProject.file("run") // Shares the run directory between versions
         jvmArguments.add("-Dmixin.debug.export=true") // Exports transformed classes for debugging
+    }
+
+    splitEnvironmentSourceSets()
+
+    mods {
+        register("solarpanels") {
+            sourceSet(sourceSets.main.get())
+            sourceSet(sourceSets.getByName("client"))
+        }
     }
 }
 

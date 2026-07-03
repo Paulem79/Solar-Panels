@@ -3,26 +3,29 @@
   "id": "${id}",
   "version": "${version}",
   "name": "${name}",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Adds solar panels to Fabric",
   "authors": [
-    "Me!"
+    "Paulem"
   ],
   "contact": {
     "homepage": "https://stonecutter.kikugie.dev/",
     "sources": "https://codeberg.org/stonecutter/template-fabric"
   },
   "license": "CC0-1.0",
-  "icon": "assets/template/icon.png",
+  "icon": "assets/solarpanels/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.example.TemplateMod"
+      "net.paulem.solarpanels.SolarPanels"
+    ],
+    "fabric-datagen": [
+      "net.paulem.solarpanels.client.datagen.SolarPanelsDataGenerator"
     ]
   },
   "mixins": [
-    "template.mixins.json"
+    "solarpanels.mixins.json"
   ],
-  "accessWidener": "template.ct",
+  "accessWidener": "solarpanels.ct",
   "depends": {
     "fabricloader": ">=0.17",
     "minecraft": "${minecraft}"

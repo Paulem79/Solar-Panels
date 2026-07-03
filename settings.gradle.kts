@@ -30,4 +30,4 @@ stonecutter {
     }
 }
 
-rootProject.name = "Template Fabric"
+rootProject.name = "Solar Panels"
